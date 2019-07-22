@@ -1,6 +1,6 @@
 <?php
 
-namespace Omnipay\Skeleton\Message;
+namespace Omnipay\FKWallet\Message;
 
 use Omnipay\Common\CreditCard;
 use Omnipay\Tests\TestCase;

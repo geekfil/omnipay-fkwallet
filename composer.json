@@ -1,17 +1,21 @@
 {
-    "name": ":vendor/omnipay-:gateway",
-    "description": ":package_description",
+    "name": "geekfil/omnipay-fkwallet",
+    "description": "FKWallet driver for Omnipay",
     "keywords": [
         "omnipay",
-        ":gateway"
+        "fkwallet",
+        "payment",
+        "withdraw",
+        "refund",
+        "money"
     ],
-    "homepage": "https://github.com/:vendor/omnipay-:gateway",
+    "homepage": "https://github.com/geekfil/omnipay-fkwallet",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": ":author_email",
-            "homepage": ":author_website"
+            "name": "Igor Filin",
+            "email": "geekfil@gmail.com",
+            "homepage": "https://t.me/geekfil"
         }
     ],
     "require": {
@@ -24,12 +28,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Omnipay\\Skeleton\\": "src"
+            "Omnipay\\FKWallet\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "League\\Skeleton\\Test\\": "tests"
+            "League\\FKWallet\\Test\\": "tests"
         }
     },
     "scripts": {
