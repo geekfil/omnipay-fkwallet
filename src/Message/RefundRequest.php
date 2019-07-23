@@ -13,12 +13,12 @@ class RefundRequest extends AbstractRequest
     {
         $this->validate('wallet_id', 'purse', 'amount', 'description', 'currency');
         return [
-            'wallet_id' => $this->getParameter('wallet_id'),
+            'wallet_id' => $this->getWalletId(),
             'purse' => $this->getPurse(),
             'amount' => $this->getAmount(),
             'desc' => $this->getDescription(),
             'currency' => $this->getCurrency(),
-            'sign' => $this->getWalletSign(),
+            'sign' => md5($this->getWalletId().$this->getCurrency().$this->getAmount().$this->getPurse().$this->getWalletKey()),
             'order_id' => $this->getTransactionId(),
             'check_duplicate' => 1,
             'action' => $this->getAction(),
@@ -27,10 +27,10 @@ class RefundRequest extends AbstractRequest
 
     protected function transfer()
     {
-        $this->validate('wallet_id', 'purse', 'amount', 'desc', 'currency');
+        $this->validate('wallet_id', 'purse', 'amount', 'currency');
         return [
-            'wallet_id' => $this->getParameter('wallet_id'),
-            'sign' => $this->getWalletSign(),
+            'wallet_id' => $this->getWalletId(),
+            'sign' => md5($this->getWalletId().$this->getAmount().$this->getPurse().$this->getWalletKey()),
             'order_id' => $this->getTransactionId(),
             'check_duplicate' => 1,
             'action' => $this->getAction(),
@@ -39,10 +39,10 @@ class RefundRequest extends AbstractRequest
 
     protected function online_payment()
     {
-        $this->validate('wallet_id', 'purse', 'amount', 'desc', 'currency');
+        $this->validate('wallet_id', 'service_id', 'account', 'amount', 'order_id');
         return [
-            'wallet_id' => $this->getParameter('wallet_id'),
-            'sign' => $this->getWalletSign(),
+            'wallet_id' => $this->getWalletId(),
+            'sign' => md5($this->getWalletId().$this->getAmount().$this->getPurse().$this->getWalletKey()),
             'order_id' => $this->getTransactionId(),
             'check_duplicate' => 1,
             'action' => 'online_payment',
@@ -53,7 +53,7 @@ class RefundRequest extends AbstractRequest
     {
         $this->validate('wallet_id', 'purse', 'amount', 'desc', 'currency');
         return [
-            'wallet_id' => $this->getParameter('wallet_id'),
+            'wallet_id' => $this->getWalletId(),
             'sign' => $this->getWalletSign(),
             'action' => $this->getAction(),
         ];

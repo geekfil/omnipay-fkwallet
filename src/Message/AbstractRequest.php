@@ -10,13 +10,16 @@ use Omnipay\Common\Message\AbstractRequest as BaseAbstractRequest;
  */
 abstract class AbstractRequest extends BaseAbstractRequest
 {
-    protected $liveEndpoint = 'https://2ip.ru';
+    protected $liveEndpoint = 'https://www.fkwallet.ru/api_v1.php';
 
 
     public function sendData($data)
     {
+
         $url = $this->getEndpoint();
-        $response = $this->httpClient->post($this->getEndpoint(), [], $data);
+        $response = $this->httpClient->post($this->getEndpoint(), [
+            'Content-Type' => 'application/x-www-form-urlencoded'
+        ], $data);
         $data = json_decode($response->getBody(), true);
 
         return $this->createResponse($data);
@@ -80,7 +83,7 @@ abstract class AbstractRequest extends BaseAbstractRequest
 
     public function getAmount()
     {
-        return $this->getParameter('amount');
+        return round($this->getParameter('amount'), 2, 2);
     }
 
 
