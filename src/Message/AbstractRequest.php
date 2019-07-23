@@ -78,9 +78,10 @@ abstract class AbstractRequest extends BaseAbstractRequest
         return $this->getParameter('purse');
     }
 
-    public function getCurrency()
+    public function getAmount()
     {
-        return $this->getParameter('currency');
+        return $this->getParameter('amount');
     }
+
 
 }
