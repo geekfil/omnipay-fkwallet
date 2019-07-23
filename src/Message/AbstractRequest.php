@@ -10,45 +10,77 @@ use Omnipay\Common\Message\AbstractRequest as BaseAbstractRequest;
  */
 abstract class AbstractRequest extends BaseAbstractRequest
 {
-    protected $liveEndpoint = 'https://api.example.com';
-    protected $testEndpoint = 'https://api-test.example.com';
+    protected $liveEndpoint = 'https://2ip.ru';
 
-    public function getKey()
-    {
-        return $this->getParameter('key');
-    }
-
-    public function setKey($value)
-    {
-        return $this->setParameter('key', $value);
-    }
 
     public function sendData($data)
     {
-        $url = $this->getEndpoint().'?'.http_build_query($data, '', '&');
-        $response = $this->httpClient->get($url);
-
+        $url = $this->getEndpoint();
+        $response = $this->httpClient->post($this->getEndpoint(), [], $data);
         $data = json_decode($response->getBody(), true);
 
         return $this->createResponse($data);
     }
 
-    protected function getBaseData()
-    {
-        return [
-            'transaction_id' => $this->getTransactionId(),
-            'expire_date' => $this->getCard()->getExpiryDate('mY'),
-            'start_date' => $this->getCard()->getStartDate('mY'),
-        ];
-    }
 
     protected function getEndpoint()
     {
-        return $this->getTestMode() ? $this->testEndpoint : $this->liveEndpoint;
+        return $this->liveEndpoint;
     }
 
     protected function createResponse($data)
     {
-        return $this->response = new Response($this, $data);
+        return $this->response = new RefundResponse($this, $data);
     }
+
+    public function getWalletSign()
+    {
+        return md5($this->getWalletId() . $this->getWalletKey());
+    }
+
+    public function getAction()
+    {
+        return $this->getParameter('action');
+    }
+
+    public function setAction($value)
+    {
+        return $this->setParameter('action', $value);
+    }
+
+    public function getWalletId()
+    {
+        return $this->getParameter('wallet_id');
+    }
+
+    public function getWalletKey()
+    {
+        return $this->getParameter('wallet_key');
+    }
+
+    public function setWalletId($value)
+    {
+        return $this->setParameter('wallet_id', $value);
+    }
+
+    public function setWalletKey($value)
+    {
+        return $this->setParameter('wallet_key', $value);
+    }
+
+    public function setPurse($value)
+    {
+        return $this->setParameter('purse', $value);
+    }
+
+    public function getPurse()
+    {
+        return $this->getParameter('purse');
+    }
+
+    public function getCurrency()
+    {
+        return $this->getParameter('currency');
+    }
+
 }

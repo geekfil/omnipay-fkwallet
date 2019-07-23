@@ -3,6 +3,7 @@
 namespace Omnipay\FKWallet;
 
 use Omnipay\Common\AbstractGateway;
+use Omnipay\FKWallet\Message\RefundRequest;
 
 /**
  * FKWallet Gateway
@@ -10,7 +11,6 @@ use Omnipay\Common\AbstractGateway;
  * @method \Omnipay\Common\Message\RequestInterface capture(array $options = array())
  * @method \Omnipay\Common\Message\RequestInterface purchase(array $options = array())
  * @method \Omnipay\Common\Message\RequestInterface completePurchase(array $options = array())
- * @method \Omnipay\Common\Message\RequestInterface refund(array $options = array())
  * @method \Omnipay\Common\Message\RequestInterface void(array $options = array())
  * @method \Omnipay\Common\Message\RequestInterface createCard(array $options = array())
  * @method \Omnipay\Common\Message\RequestInterface updateCard(array $options = array())
@@ -20,34 +20,30 @@ class Gateway extends AbstractGateway
 {
     public function getName()
     {
+        return 'FreeKassa Wallet';
+    }
+
+    public function getShortName()
+    {
         return 'FKWallet';
     }
 
-    public function getDefaultParameters()
+
+    public function setWalletId($value)
     {
-        return array(
-            'key' => '',
-            'testMode' => false,
-        );
+        return $this->setParameter('wallet_id', $value);
     }
 
-    public function getKey()
+    public function setWalletKey($value)
     {
-        return $this->getParameter('key');
+        return $this->setParameter('wallet_key', $value);
     }
 
-    public function setKey($value)
+    public function refund(array $options = array())
     {
-        return $this->setParameter('key', $value);
+        return $this->createRequest(RefundRequest::class, $options);
     }
 
-    /**
-     * @return Message\AuthorizeRequest
-     */
-    public function authorize(array $parameters = array())
-    {
-        return $this->createRequest('\Omnipay\FKWallet\Message\AuthorizeRequest', $parameters);
-    }
 
     public function __call($name, $arguments)
     {
@@ -55,7 +51,6 @@ class Gateway extends AbstractGateway
         // TODO: Implement @method \Omnipay\Common\Message\RequestInterface capture(array $options = array())
         // TODO: Implement @method \Omnipay\Common\Message\RequestInterface purchase(array $options = array())
         // TODO: Implement @method \Omnipay\Common\Message\RequestInterface completePurchase(array $options = array())
-        // TODO: Implement @method \Omnipay\Common\Message\RequestInterface refund(array $options = array())
         // TODO: Implement @method \Omnipay\Common\Message\RequestInterface void(array $options = array())
         // TODO: Implement @method \Omnipay\Common\Message\RequestInterface createCard(array $options = array())
         // TODO: Implement @method \Omnipay\Common\Message\RequestInterface updateCard(array $options = array())
